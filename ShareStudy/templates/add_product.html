@@ -1,0 +1,270 @@
+<!-- templates/admin/add_product.html -->
+{% extends 'adminnav.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select,
+        input[type="file"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l4-5H2l4 5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: 100%;
+            background-position-y: 50%;
+            padding-right: 30px;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .form-group {
+            margin-bottom: 30px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        .error-message {
+            color: red;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Product</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_course">Course:</label>
+                <select name="course" class="form-control" id="id_course" required>
+                    <option value="" selected disabled>Select a Course</option>
+                    {% for course in var %}
+                        <option value="{{ course.id }}">{{ course.course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+                <div id="title-error" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author" required>
+                <div id="author-error" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+                <div id="description-error" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-fiction">Non-fiction</option>
+                    <option value="Edited (non-fiction)">Edited (non-fiction)</option>
+                    <option value="Reference (non-fiction)">Reference (non-fiction)</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN:</label>
+                <input type="text" id="isbn" name="isbn">
+                <div id="isbn-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="publisher">Publisher:</label>
+                <input type="text" id="publisher" name="publisher">
+                <div id="publisher-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="publication_date">Publication Date:</label>
+                <input type="date" id="publication_date" name="publication_date">
+                <div id="publication_date-error" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="language">Language:</label>
+                <select id="language" name="language">
+                    <option value="">Select language</option>
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Malayalam">Malayalam</option>
+                    <!-- Add more language options as needed -->
+                </select>
+                <div id="language-error" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="images">Images:</label>
+                <input type="file" id="image" name="image" accept="image/*" multiple required>
+                
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Product">
+            </div>
+        </form>
+    </div>
+    <script>
+        const titleInput = document.getElementById("title");
+        const authorInput = document.getElementById("author");
+        const descriptionInput = document.getElementById("description");
+        const isbnInput = document.getElementById("isbn");
+        const publisherInput = document.getElementById("publisher");
+        const languageInput = document.getElementById("language");
+
+    
+        // Regex patterns for validation
+        const textPattern = /^[a-zA-Z0-9\s]*$/;// Regular expression to allow only alphabets and spaces
+    
+        // Validate title
+        titleInput.addEventListener("input", function () {
+            const titleValue = titleInput.value.trim();
+    
+            if (!textPattern.test(titleValue)) {
+                displayError(titleInput, "Title cannot contain symbols.");
+            } else {
+                clearError(titleInput);
+            }
+        });
+    
+        // Validate author
+        authorInput.addEventListener("input", function () {
+            const authorValue = authorInput.value.trim();
+    
+            if (!textPattern.test(authorValue)) {
+                displayError(authorInput, "Author name cannot contain numbers or symbols.");
+            } else {
+                clearError(authorInput);
+            }
+        });
+    
+        // Validate description
+        descriptionInput.addEventListener("input", function () {
+            if (descriptionInput.value.trim() === "") {
+                displayError(descriptionInput, "Description is required.");
+            } else {
+                clearError(descriptionInput);
+            }
+        });
+    
+
+        isbnInput.addEventListener("input", function () {
+            const isbnValue = isbnInput.value.trim();
+    
+            if (!textPattern.test(isbnValue)) {
+                displayError(isbnInput, "ISBN cannot contain symbols.");
+            } else {
+                clearError(isbnInput);
+            }
+        });
+    
+        // Validate Publisher
+        publisherInput.addEventListener("input", function () {
+            const publisherValue = publisherInput.value.trim();
+    
+            if (!textPattern.test(publisherValue)) {
+                displayError(publisherInput, "Publisher name cannot contain numbers or symbols.");
+            } else {
+                clearError(publisherInput);
+            }
+        });
+    
+        // Validate Language
+        languageInput.addEventListener("input", function () {
+            const languageValue = languageInput.value.trim();
+    
+            if (!textPattern.test(languageValue)) {
+                displayError(languageInput, "Language cannot contain symbols.");
+            } else {
+                clearError(languageInput);
+            }
+        });
+
+
+        function displayError(inputElement, message) {
+            const errorElement = document.getElementById(`${inputElement.id}-error`);
+            errorElement.innerHTML = message;
+        }
+    
+        function clearError(inputElement) {
+            const errorElement = document.getElementById(`${inputElement.id}-error`);
+            errorElement.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
+{% endblock body %}

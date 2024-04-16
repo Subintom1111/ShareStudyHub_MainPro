@@ -1,0 +1,155 @@
+{% extends 'adminnav.html' %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .product {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-details {
+            flex: 0 0 calc(50% - 10px); /* Adjust width based on desired spacing */
+            margin-bottom: 20px;
+            font-size: 20px; /* Adjust the font size as needed */
+        }
+        
+
+        .product-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .product-image {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+            margin-left: auto; /* Align to the right */
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .edit-option {
+            text-align: ;
+        }
+        
+        .green-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .items{
+            align-items: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Products</h1>
+        {% for product in products %}
+            <div class="product">
+                
+                <!-- Product details -->
+                <div class="items">
+                    <div class="product-details">
+                        <label>Title:</label>
+                        <p>{{ product.title }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Stock:</label>
+                        <p>{{ product.quantity }}</p>
+                    </div>
+                    <div class="product-details">
+                        <label>Price:</label>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    <div class="edit-option">
+                        <form action="{% url 'edit_product' product.id %}" method="get">
+                            <button type="submit" class="green-button">Edit</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="product-image">
+                    
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="Book Image" class="product-image">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <div class="edit-option">
+                        <form action="{% url 'product_details' product.id %}" method="get">
+                            <button type="submit" class="green-button">View Details</button>
+                        </form>
+                    </div>
+                   
+                </div>
+        
+               
+                
+                {% comment %} <a href="{% url 'product_details' product.id %}">View Details</a> {% endcomment %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock body %}
